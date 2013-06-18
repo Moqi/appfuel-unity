@@ -17,8 +17,10 @@
 @property (strong, nonatomic) AppfuelTarget * target;
 @property (strong, nonatomic) AppfuelConfiguration * config;
 
+// MARK: Public Methods
 -(void) load;
 -(void) show;
+-(void) stop;
 -(BOOL) isReady;
 
 + (AppfuelBannerController *) instance;

@@ -23,6 +23,7 @@ public class AppfuelInterstitialController : MonoBehaviour
 	[DllImport("__Internal")]
 	private static extern void initInterstitial_(string appKey, bool isTesting);
 	
+	// Use This function to set Targeted request
 	[DllImport("__Internal")]
 	private static extern void setInterstitialTarget_(Gender gender, string[] keywords, int year, int month, int day);
 	
@@ -33,6 +34,10 @@ public class AppfuelInterstitialController : MonoBehaviour
 	private void Init()
 	{
 		Debug.Log("Loading");
+		if ( this.isInitialized == true )
+		{
+			return;
+		}
 #if UNITY_ANDROID && !UNITY_EDITOR
 		if ( this.androidAppKey == null )
 		{

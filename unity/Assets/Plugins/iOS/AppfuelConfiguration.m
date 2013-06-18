@@ -10,7 +10,18 @@
 
 @implementation AppfuelConfiguration
 
-@synthesize isTesting, position, appKey, size;
+@synthesize isTesting, position, appKey, size, hasPosition;
+
+-(id) init
+{
+    self = [super init];
+    if ( self )
+    {
+        self.hasPosition = NO;
+    }
+    
+    return self;
+}
 
 -(void) setSizeWithWidth:(int)aWidth height:(int)aHeight
 {
@@ -19,7 +30,8 @@
 
 -(void) setPositionWithInt:(int)aPosition
 {
-    switch (aPosition) {
+    switch (aPosition)
+    {
         case 0:
             position = kAFPromoPositionBottomCenter;
             break;
@@ -29,6 +41,8 @@
             position = kAFPromoPositionBottomCenter;
             break;
     }
+
+    self.hasPosition = YES;
 }
 
 @end

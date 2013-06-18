@@ -34,37 +34,69 @@ static AppfuelBannerController * instance;
     return self;
 }
 
+// MARK: AFPromoDelegate Method
 -(void) promoDidFinishLoading:(id<Promo>) aPromo
 {
+    // INSERT YOUR CODE FOR YOUR OWN DELEGATE BEHAVIOR
     isReady = YES;
+    [self show];
 }
 
 -(void) promo:(id<Promo>)aPromo failedToLoadWithError:(AFPromoError *) error
 {
+    // INSERT YOUR CODE FOR YOUR OWN DELEGATE BEHAVIOR
      NSLog(@"Error :%@", error);
+    [self stop];
 }
 
+// MARK: Public methods
 -(void) load
 {
-    request = [target toRequest];
+    if ( target )
+    {
+        request = [target toRequest];
+    }
+    
     if ( !request )
     {
         request = [AFPromoRequest request];
     }
+    
     [request setTestMode:config.isTesting];
     promoView = [[AFPromoView alloc] initWithSize:config.size];
     promoView.appKey = config.appKey;
+    promoView.delegate = self;
     [promoView request:request];
-    [self.view addSubview: promoView];
 }
 
 -(void) show
 {
+    if ( !promoView )
+    {
+        return;
+    }
+    
+    // Add promoView to self.view if and only if promoView is not added yet
     if ( ![promoView isDescendantOfView: self.view] )
     {
         [self.view addSubview:promoView];
+        
+        // Setting up promo position
+        if ( config.hasPosition )
+        {
+            [promoView setPosition:config.position];
+        }
     }
 
+}
+
+-(void) stop
+{
+    if ( promoView )
+    {
+        // Releasing promoView
+        promoView = nil;
+    }
 }
 
 -(BOOL) isReady
@@ -74,6 +106,7 @@ static AppfuelBannerController * instance;
 
 -(void) dealloc
 {
+    [super dealloc];
     instance = nil;
     promoView = nil;
 }
@@ -90,6 +123,7 @@ static AppfuelBannerController * instance;
 
 @end
 
+// MARK: Plug-in Methods
 void initBanner_(char * appKey, bool isTesting, int width, int height)
 {
     AppfuelBannerController * controller = [AppfuelBannerController instance];
@@ -114,5 +148,11 @@ void loadBanner_()
 {
     AppfuelBannerController * controller = [AppfuelBannerController instance];
     [controller load];
+}
+
+void stopBanner_()
+{
+    AppfuelBannerController * controller = [AppfuelBannerController instance];
+    [controller stop];
 }
 

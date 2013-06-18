@@ -27,15 +27,23 @@ public class AppfuelBannerController : MonoBehaviour
 	[DllImport("__Internal")]
 	private static extern void initBanner_(string appKey, bool isTesting, int width, int height);
 	
+	// Use This function to set Targeted request
 	[DllImport("__Internal")]
 	private static extern void setBannerTarget_(Gender gender, string[] keywords, int year, int month, int day);
 	
 	[DllImport("__Internal")]
 	private static extern void loadBanner_();
+	
+	[DllImport("__Internal")]
+	private static extern void stopBanner_();
 #endif
 	
 	private void Init()
 	{
+		if ( this.isInitialized == true )
+		{
+			return;
+		}
 #if UNITY_ANDROID && !UNITY_EDITOR
 		// TODO:: do something for Android
 		if ( this.androidAppKey == null )

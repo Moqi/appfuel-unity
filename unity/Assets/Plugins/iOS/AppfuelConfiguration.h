@@ -13,8 +13,10 @@
 
 @property (strong, nonatomic) NSString * appKey;
 @property BOOL isTesting;
+@property BOOL hasPosition;
 @property AFPromoSize size;
 @property AFPromoPosition position;
+
 
 -(void) setSizeWithWidth:(int)aWidth height:(int)aHeight;
 -(void) setPositionWithInt:(int)aPosition;
